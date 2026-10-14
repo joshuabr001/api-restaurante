@@ -1,12 +1,18 @@
-import { error } from "console"
 import { NextFunction, Request, Response } from "express"
 import { AppError } from "../utils/AppError.js"
 import { z } from "zod"
+import { knex } from "../src/database/knex.js"
 
 class ProductController {
   async index(request: Request, response: Response, next: NextFunction) {
     try {
-      return response.json({ message: "ok" })
+      const { name } = request.query
+
+      const products = await knex<ProductRepository>("produto")
+        .select()
+        .whereLike("name", `%${name ?? ""}%`)
+        .orderBy("name")
+      response.json(products)
     } catch (error) {
       next(error)
     }
@@ -18,10 +24,12 @@ class ProductController {
         name: z.string().trim().min(6),
         price: z.number().gt(0, { message: "value must be greater than 0" }),
       })
-      
+
       const { name, price } = bodySchema.parse(request.body)
 
-      return response.status(201).json({ name, price })
+      await knex<ProductRepository>("produto").insert({ name, price })
+
+      return response.status(201).json()
     } catch (error) {
       next(error)
     }

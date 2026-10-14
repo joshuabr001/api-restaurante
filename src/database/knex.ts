@@ -1,4 +1,4 @@
-import { knex as knexConfig } from "knex"
+import knexConfig from "knex"
 
 import config from "../../knexfile.js"
 
