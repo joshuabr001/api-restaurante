@@ -1,13 +1,18 @@
 import { Request, Response, NextFunction } from "express"
-import knex, { Knex } from "knex"
+import { knex } from "../src/database/knex.js"
 
-class TablesControler {
+class TablesController {
   async index(request: Request, response: Response, next: NextFunction) {
     try {
-      const tables = await knex("tables").select().orderBy("table_number")
+      const tables = await knex<TableRepository>("tables")
+        .select()
+        .orderBy("table_number")
 
+      return response.json(tables)
     } catch (error) {
       next(error)
     }
   }
 }
+
+export { TablesController }
