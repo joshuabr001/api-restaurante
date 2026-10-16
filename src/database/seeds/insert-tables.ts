@@ -6,10 +6,10 @@ export async function seed(knex: Knex): Promise<void> {
 
   // Inserts seed entries
   await knex("tables").insert([
-    { table_number: 1 },
-    { table_number: 2 },
-    { table_number: 3 },
-    { table_number: 4 },
-    { table_number: 5 },
+    { id: 1, table_number: 1 },
+    { id: 2, table_number: 2 },
+    { id: 3, table_number: 3 },
+    { id: 4, table_number: 4 },
+    { id: 5, table_number: 5 },
   ])
 }
