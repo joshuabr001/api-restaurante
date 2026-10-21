@@ -23,7 +23,6 @@ class TableSessionsController {
 
       await knex<TableSessionsRepository>("table_sessions").insert({
         table_id,
-        opened_at: knex.fn.now(),
       })
 
       return response.status(201).json()
